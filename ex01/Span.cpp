@@ -6,13 +6,14 @@
 /*   By: fnichola <fnichola@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/06 02:16:23 by fnichola          #+#    #+#             */
-/*   Updated: 2023/01/06 03:07:27 by fnichola         ###   ########.fr       */
+/*   Updated: 2023/01/09 03:52:24 by fnichola         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdexcept>
 #include <algorithm>
 #include <numeric>
+#include <iostream>
 #include "Span.hpp"
 
 Span::Span() {}
@@ -28,7 +29,10 @@ Span::~Span() {}
 
 Span & Span::operator=(const Span &rhs)
 {
-	m_vector = rhs.m_vector;
+	if (this != &rhs)
+	{
+		m_vector = rhs.m_vector;
+	}
 	return *this;
 }
 
@@ -44,7 +48,7 @@ int Span::shortestSpan()
 	if (m_vector.size() < 2)
 		throw std::logic_error("Error: Not enough numbers to compare");
 	std::sort(m_vector.begin(), m_vector.end());
-	std::vector<int> dVector(m_vector.size() - 1);
+	std::vector<int> dVector(m_vector.size());
 	std::adjacent_difference(m_vector.begin(), m_vector.end(), dVector.begin());
 
 	const std::vector<int>::const_iterator minElement =
@@ -67,3 +71,11 @@ int Span::longestSpan()
 	return (*maxElement - *minElement);
 }
 
+void Span::print()
+{
+	for (std::vector<int>::iterator it = m_vector.begin();
+		it < m_vector.end(); ++it)
+	{
+		std::cout << (it - m_vector.begin()) << ": " << *it << std::endl;
+	}
+}
